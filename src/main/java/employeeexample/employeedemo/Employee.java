@@ -6,6 +6,10 @@ public class Employee {
     private String firstName;
     private String lastName;
 
+    public String getKey() {
+        return firstName.toLowerCase() + " " + lastName.toLowerCase();
+    }
+
     public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
