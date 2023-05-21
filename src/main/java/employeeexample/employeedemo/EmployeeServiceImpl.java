@@ -5,20 +5,22 @@ import employeeexample.employeedemo.exceptions.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final Map<String, Employee> employees = new HashMap<>();
 
 
-    public Employee addEmployee(String firstName, String lastName) {
-        Employee newEmployee = new Employee(firstName, lastName);
+    public Employee addEmployee(String firstName, String lastName, double salary, String department) {
+        Employee newEmployee = new Employee(firstName, lastName, salary, department);
         if (employees.containsKey(newEmployee.getKey())) {
             throw new EmployeeAlreadyAddedException();
         }
         employees.put(newEmployee.getKey(), newEmployee);
         return newEmployee;
     }
+
 
     public Employee removeEmployee(String firstName, String lastName) {
         Employee employeeToRemove = new Employee(firstName, lastName);
@@ -38,6 +40,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public Collection<Employee> getAllEmployees() {
         return Collections.unmodifiableCollection(employees.values());
+    }
+
+    public Employee getEmployeeWithMaxSalaryByDepartment(String departmentId) {
+        return employees.values().stream()
+                .filter(employee -> employee.getDepartment().equals(departmentId))
+                .max(Comparator.comparingDouble(Employee::getSalary))
+                .orElseThrow(EmployeeNotFoundException::new);
+    }
+
+    public Employee getEmployeeWithMinSalaryByDepartment(String departmentId) {
+        return employees.values().stream()
+                .filter(employee -> employee.getDepartment().equals(departmentId))
+                .min(Comparator.comparingDouble(Employee::getSalary))
+                .orElseThrow(EmployeeNotFoundException::new);
+    }
+
+    public List<Employee> getEmployeesByDepartment(String departmentId) {
+        return employees.values().stream()
+                .filter(employee -> employee.getDepartment().equals(departmentId))
+                .collect(Collectors.toList());
+    }
+
+    public Map<String, List<Employee>> getAllEmployeesByDepartment() {
+        return employees.values().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment));
     }
 
 
