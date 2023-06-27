@@ -13,7 +13,8 @@ public class Employee {
     }
 
     public Employee(String firstName, String lastName){
-
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Employee(String firstName, String lastName, double salary, String department) {
@@ -61,5 +62,7 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(firstName, lastName);
     }
+
+
 
 }

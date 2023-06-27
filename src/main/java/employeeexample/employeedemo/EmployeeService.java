@@ -1,5 +1,6 @@
 package employeeexample.employeedemo;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,4 +12,6 @@ public interface EmployeeService {
     Employee getEmployeeWithMinSalaryByDepartment(String departmentId);
     List<Employee> getEmployeesByDepartment(String departmentId);
     Map<String, List<Employee>> getAllEmployeesByDepartment();
+    Collection<Employee> getAllEmployees();
+
 }
