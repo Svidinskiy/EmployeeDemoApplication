@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -22,8 +23,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
-        return employeeService.addEmployee(firstName, lastName);
+    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName, @RequestParam double salary, @RequestParam String department) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
+        return employeeService.addEmployee(firstName, lastName, salary, department);
     }
 
     @GetMapping("/remove")
@@ -40,5 +41,26 @@ public class EmployeeController {
     public Collection<Employee> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
+
+    @GetMapping("/departments/max-salary")
+    public Employee getEmployeeWithMaxSalaryByDepartment(@RequestParam String departmentId) throws EmployeeNotFoundException {
+        return employeeService.getEmployeeWithMaxSalaryByDepartment(departmentId);
+    }
+
+    @GetMapping("/departments/min-salary")
+    public Employee getEmployeeWithMinSalaryByDepartment(@RequestParam String departmentId) throws EmployeeNotFoundException {
+        return employeeService.getEmployeeWithMinSalaryByDepartment(departmentId);
+    }
+
+    @GetMapping("/departments")
+    public List<Employee> getEmployeesByDepartment(@RequestParam String departmentId) {
+        return employeeService.getEmployeesByDepartment(departmentId);
+    }
+
+    @GetMapping("/departments/all")
+    public Map<String, List<Employee>> getAllEmployeesByDepartmentMap() {
+        return employeeService.getAllEmployeesByDepartment();
+    }
+
 }
 
